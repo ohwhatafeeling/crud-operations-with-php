@@ -26,6 +26,8 @@ function get_task_list($filter = null) {
       case 'category':
         $where = ' WHERE category = ?';
         break;
+      case 'date':
+        $where = ' WHERE date >= ? AND date <= ?';
     }
   }
 
@@ -38,6 +40,9 @@ function get_task_list($filter = null) {
     $results = $db->prepare($sql . $where . $orderBy);
     if (is_array($filter)) {
       $results->bindValue(1, $filter[1]);
+      if ($filter[0] == 'date') {
+        $results->bindValue(2, $filter[2]);
+      }
     }
     $results->execute();
   } catch (Exception $e) {
