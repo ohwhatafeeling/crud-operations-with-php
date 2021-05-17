@@ -70,6 +70,22 @@ function add_project($title, $category) {
   return true;
 }
 
+function get_project($project_id) {
+  include('connection.php');
+
+  try {
+    $sql = 'SELECT * FROM projects WHERE project_id = ?';
+    $results = $db->prepare($sql);
+    $results->bindValue(1, $project_id, PDO::PARAM_INT);
+    $results->execute();
+  } catch (Exception $e) {
+    echo "Error!:" . $e->getMessage() . "</br>";
+    return false;
+  }
+
+  return $results->fetch();
+}
+
 function add_task($project_id, $title, $date, $time) {
   include('connection.php');
 
